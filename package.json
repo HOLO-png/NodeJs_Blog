@@ -1,0 +1,29 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --inspect ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/HOLO-png/NodeJs_Blog.git"
+  },
+  "keywords": [
+    "anhlongwin1901"
+  ],
+  "author": "HoangLong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HOLO-png/NodeJs_Blog/issues"
+  },
+  "homepage": "https://github.com/HOLO-png/NodeJs_Blog#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}

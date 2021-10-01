@@ -1,0 +1,22 @@
+<div class="mt-4">
+    <h1>Edit Form</h1>
+    <form method="POST" action="/hoanglong/{{colection._id}}?_method=PUT">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="Name" value={{colection.name}} name="name"
+                placeholder="Password">
+        </div>
+        <div class="form-group">
+            <label for="description">description</label>
+            <input type="text" class="form-control" id="description" value={{colection.description}}
+                aria-describedby="emailHelp" placeholder="text" name="description">
+        </div>
+        <div class="form-group">
+            <label for="description">thumnail</label>
+            <input type="text" class="form-control" id="thumnail" value={{colection.thumnail}}
+                aria-describedby="emailHelp" placeholder="text" name="thumnail">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+    </form>
+</div>

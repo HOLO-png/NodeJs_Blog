@@ -1,0 +1,144 @@
+<form class="table" name="container-form" method="POST" action="/hoanglong/handle-form-actions">
+    <h1>Khoa Hoc Cua Tui</h1>
+    {{#if deletedCount}}
+    <h6>Thung rac ({{deletedCount}})</h6>
+    {{/if}}
+    <div class="mt-4">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="checkbox-all">
+            <label class="custom-control-label" for="checkbox-all">All Check</label>
+        </div>
+
+        <select class="custom-select" name="action" required>
+            <option selected value="">-- Chọn hành động --</option>
+            <option value="delete">Xoá</option>
+        </select>
+
+        <Button class="btn btn-primary" id="btn-checkedAll-sumit" type="submit" disabled>Perform</Button>
+    </div>
+    <table class=" table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col"></th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Date Create</th>
+                <th scope="col">Image</th>
+                <th scope="col">Operation</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each courses}}
+            <tr>
+
+                <th scope="row">{{@index}}</th>
+                <td>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="{{this._id}}" name="gaixinhIds[]"
+                            value="{{this._id}}">
+                        <label class="custom-control-label" for={{this._id}}></label>
+                    </div>
+                </td>
+                <td>{{this.name}}</td>
+                <td>{{this.description}}</td>
+                <td>{{this.createdAt}}</td>
+                <td>
+                    <img src={{this.thumnail}} alt="ok" style="width: 50px; height: 50px;">
+                </td>
+                <td>
+                    <a href="/hoanglong/{{this._id}}/edit" class="btn btn-outline-success">Edit</a>
+                    <a href="" data-id="{{this._id}}" class="btn btn-outline-danger" data-toggle="modal"
+                        data-target="#exampleModal">Delete</a>
+                </td>
+            </tr>
+            {{else}}
+            <tr>
+                <td colspan="5" class="text-center">
+                    Bạn chưa đăng hình ảnh nào hết!
+                    <a href="/hoanglong/create">Đăng hình ảnh</a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</form>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Comfirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc là muốn xoá trường này không ??
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btn-delete" class="btn btn-primary bg-danger">Delete</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form method="POST" name="delete-form">
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var itemId;
+        var deleteForm = document.forms['delete-form'];
+        var containerForm = document.forms['container-form'];
+        var btnDeleteItem = document.querySelector('#btn-delete');
+        var checkboxAll = $('#checkbox-all');
+        var gaixinhItemCheckbox = $('input[name="gaixinhIds[]"]');
+        var checkedAllSubmit = $('#btn-checkedAll-sumit');
+
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            itemId = id
+        });
+
+        btnDeleteItem.onclick = function () {
+            deleteForm.action = `/hoanglong/${itemId}?_method=DELETE`;
+            deleteForm.submit();
+        }
+
+        //--------------------
+        checkboxAll.change(function () {
+            var ischeckedAll = $(this).prop('checked');
+            gaixinhItemCheckbox.prop('checked', ischeckedAll);
+            renderCheckedAllSubmitBtn()
+        })
+
+        gaixinhItemCheckbox.change(function () {
+            var isCheckedAll = gaixinhItemCheckbox.length === $('input[name="gaixinhIds[]"]:checked').length;
+            checkboxAll.prop('checked', isCheckedAll);
+            renderCheckedAllSubmitBtn()
+        })
+
+        checkedAllSubmit.click(function (e) {
+            e.preventDefault();
+            var isSubmittable = !checkedAllSubmit.hasClass('disabled');
+            if (isSubmittable) {
+                containerForm.submit();
+            }
+        })
+
+        function renderCheckedAllSubmitBtn() {
+            var checkedAll = $('input[name="gaixinhIds[]"]:checked').length;
+            if (!checkedAll) {
+                checkedAllSubmit.attr('disabled', true);
+            } else {
+                checkedAllSubmit.attr('disabled', false);
+            }
+        }
+    })
+
+
+</script>

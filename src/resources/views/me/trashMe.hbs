@@ -1,0 +1,93 @@
+<div class="table">
+    <h1>Gái Xinh Đã Xoá</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Date Create</th>
+                <th scope="col">Image</th>
+                <th scope="col">Operation</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each courses}}
+            <tr>
+                <th scope="row">{{@index}}</th>
+                <td>{{this.name}}</td>
+                <td>{{this.description}}</td>
+                <td>{{this.createdAt}}</td>
+                <td>
+                    <img src={{this.thumnail}} alt="ok" style="width: 50px; height: 50px;">
+                </td>
+                <td>
+                    <a href="" class="btn btn-outline-danger" data-id="{{this._id}}" data-toggle="modal" data-target="#exampleModal">Xoá Vĩnh Viễn</a>
+                    <a href="" data-id="{{this._id}}" class="btn btn-outline-success btn-restore">Khôi Phục</a>
+                </td>
+            </tr>
+            {{else}}
+            <tr>
+                <td colspan="5" class="text-center">
+                    Thùng rác trống!
+                    <a href="me/hoanglong/store">Trở lại danh sách khoá học</a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Comfirm</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          Bạn có chắc là muốn xoá vĩnh viễn trường này không ??
+      </div>
+      <div class="modal-footer">
+            <button type="button" id="btn-delete" class="btn btn-primary bg-danger">Đồng Ý</button>
+            <button  type="button" class="btn btn-secondary" data-dismiss="modal">Trở Lại</button>
+      </div>
+    </div>
+  </div>
+</div>
+ <form method="POST" name="restore-form"></form>
+ <form method="POST" name="delete-form"></form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var itemId;
+        var deleteForm = document.forms['delete-form'];
+        var restoreForm = document.forms['restore-form'];
+
+        console.log(restoreForm)
+        var btnDeleteItem = document.querySelector('#btn-delete');
+        var btnRestore = $('.btn-restore')
+
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            itemId = id
+        });
+
+        btnDeleteItem.onclick = function () {
+            deleteForm.action = `/hoanglong/${itemId}/destroy?_method=DELETE`;
+            deleteForm.submit();
+        }
+
+        btnRestore.click(function (e) {
+            e.preventDefault();
+            let itemIdRestore = $(this).data('id');
+            restoreForm.action = `/hoanglong/${itemIdRestore}/restore?_method=PATCH`;
+            restoreForm.submit();
+        })
+    })
+
+    
+</script>
